@@ -7,7 +7,7 @@ const {getAllUsers} = require("../controllers/UserControllers/getAllUsers");
 const {getUserById} = require("../controllers/UserControllers/getUserById");
 
 
-router.post("/signup",addUser)
+router.post("/add",addUser)
 router.get("/search",searchUsers)
 router.get("/all",getAllUsers)
 router.get("/single/:id",getUserById)

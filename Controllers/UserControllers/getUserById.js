@@ -3,7 +3,7 @@ const UserModel = require("../../Models/UserModel")
 const getUserById = async (req,res) => {
 	const id = req.params.id
 	try{
-		const user= await UserModel.findById(id)
+		const user= await UserModel.findOne({ userId:id })
 		if (user == null){
 			return res.json({
 				msg:"This user does not exist",

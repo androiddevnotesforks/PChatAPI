@@ -11,7 +11,7 @@ const searchUsers = async (req,res) => {
 	}
 	try {
 		const users = await UserModel.find()
-		const searchresults = users.filter((user) => user.username.toLowerCase().includes(searchTerm.toLowerCase()))
+		const searchresults = users.filter((user) => user.email.toLowerCase().includes(searchTerm.toLowerCase()))
 		return res.json({
 			msg:`Found ${searchresults.length} results for ${searchTerm}`,
 			success:true,
@@ -24,12 +24,8 @@ const searchUsers = async (req,res) => {
 			msg:"An unexpected error occurred",
 			success:false,
 			users:[]
-
 		})
-
 	}
-
-
 }
 
 module.exports = { searchUsers }

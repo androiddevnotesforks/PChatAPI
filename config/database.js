@@ -5,9 +5,7 @@ dotenv.config()
 
 mongoose.connect(process.env.REMOTE_DATABASE_URL,{
 	useNewUrlParser:true,
-	useCreateIndex:true,
 	useUnifiedTopology:true,
-	useFindAndModify:false,
 })
 .then(() => {
 	console.log("Database connected successfully")

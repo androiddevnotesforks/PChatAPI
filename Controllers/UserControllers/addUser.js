@@ -1,37 +1,50 @@
 const UserModel = require("../../Models/UserModel")
 
 const addUser = async (req,res) => {
-
-	const { displayName,imageUrl,email, } = req.body
-	const existingUser = await UserModel.findOne({ email })
-
-	if (existingUser === null){
-		const newUser = new UserModel({
-			displayName,
-			email,
-			imageUrl
-
-		})
-		newUser.save()
-		.then(() => {
-			return res.json({
-				msg:"Account created successfully",
-				success:true
+	console.log(req.body)
+	const { displayName,imageUrl,email,userId } = req.body
+	try{
+		const existingUser = await UserModel.findOne({ email })
+		if (existingUser === null){
+			const newUser = new UserModel({
+				displayName,
+				email,
+				imageUrl,
+				userId
 			})
-		})
-		.catch((err) => {
-			console.log(err)
+			newUser.save()
+			.then(() => {
+				return res.json({
+					msg:"Account created successfully",
+					success:true
+				})
+			})
+			.catch((err) => {
+				console.log(err)
+				return res.json({
+					msg:"An unexpected error occurred",
+					success:false
+				})
+			})
+		}else {
 			return res.json({
-				msg:"An unexpected error occurred",
+				msg:"An account with the similar username already exists",
 				success:false
 			})
-		})
-	}else {
+		}
+
+
+
+	}catch (e){
+		console.log(e)
 		return res.json({
-			msg:"An account with the similar username already exists",
+			msg:"An unexpected error occurred",
 			success:false
 		})
 	}
+
+
+
 
 
 
