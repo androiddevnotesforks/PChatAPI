@@ -45,13 +45,13 @@ io.on('connection',async (socket) => {
 		if (room === null){
 			await createNewRoom(user1,user2)
 			const newRoom = await getRoomId(user1,user2)
-			console.log("New Room",newRoom)
+			console.log("New Room >>>>>>>",newRoom)
 			socket.join(newRoom)
-			io.to(newRoom).emit("roomJoined",newRoom)
+			io.in(newRoom).emit("roomJoined>>>>>>",newRoom)
 		}else {
-			console.log("Room",room)
+			console.log("Existing Room >>>>>>",room)
 			socket.join(room)
-			io.to(room).emit("roomJoined", room)
+			io.in(room).emit("roomJoined", room)
 		}
 	})
 
@@ -59,8 +59,8 @@ io.on('connection',async (socket) => {
 		const messageInfo = JSON.parse(message)
 		const newMessage = await sendMessage(messageInfo)
 		const roomId = await getRoomId(messageInfo.sender,messageInfo.receiver)
-		console.log("Room Id fetched",roomId)
-		socket.emit("receiveMessage",JSON.stringify(newMessage))
+		console.log("Room Id fetched>>>>>>",roomId)
+		io.emit("receiveMessage",JSON.stringify(newMessage))
 		console.log("receive message event emitted")
 	})
 });

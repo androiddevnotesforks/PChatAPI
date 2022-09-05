@@ -20,6 +20,7 @@ async function sendMessage(message){
 				chats:{
 					id:chatId,
 					name:receiver.displayName,
+					userId:receiver.userId,
 					email:receiver.email,
 					imageUrl:receiver.imageUrl,
 					messages:[messageObj]
@@ -30,6 +31,7 @@ async function sendMessage(message){
 			$push:{
 				chats:{
 					id:chatId,
+					userId:sender.userId,
 					name:sender.displayName,
 					email:sender.email,
 					imageUrl:sender.imageUrl,
