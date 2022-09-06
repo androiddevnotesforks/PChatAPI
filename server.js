@@ -69,3 +69,7 @@ io.on('connection',async (socket) => {
 const port = process.env.PORT || 9000;
 
 server.listen(port,() => console.log("Server started on PORT 9000"));
+
+if (process.env.NODE_ENV ==="production"){
+	module.exports = server
+}
