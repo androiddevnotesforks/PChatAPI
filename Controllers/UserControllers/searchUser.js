@@ -28,4 +28,4 @@ const searchUsers = async (req,res) => {
 	}
 }
 
-module.exports = { searchUsers }
+module.exports = searchUsers

@@ -20,4 +20,4 @@ const getRoomId = async (user1,user2) => {
 		console.log(e)
 	}
 }
-module.exports = { getRoomId }
+module.exports =  getRoomId

@@ -29,7 +29,7 @@ const createNewRoom = require("././Controllers/ChatControllers/createNewRoom")
 const connection = require("./config/database")
 const UserRoutes = require("./Routes/UserRoutes")
 const ChatRoutes = require("./Routes/ChatRoutes")
-const {getRoomId} = require("./Controllers/ChatControllers/getRoomId");
+const getRoomId = require("./Controllers/ChatControllers/getRoomId");
 
 app.use("/user",UserRoutes)
 app.use("/chat",ChatRoutes)
