@@ -3,13 +3,13 @@ const crypto = require("crypto");
 
 
 
-async function sendMessage(message){
+async function sendMessage(message:any){
 	const sender = await UserModel.findOne({ email:message.sender })
 	const receiver = await UserModel.findOne({ email:message.receiver })
 	const senderChats = sender.chats
 	const receiverChats = receiver.chats
 
-	const currentChat = senderChats.find((chat) => chat.email === receiver.email)
+	const currentChat = senderChats.find((chat:any) => chat.email === receiver.email)
 	const messageId = crypto.randomBytes(16).toString("hex")
 	const chatId = crypto.randomBytes(16).toString("hex")
 
@@ -78,4 +78,4 @@ async function sendMessage(message){
 	return messageObj
 }
 
-module.exports = sendMessage
+export default sendMessage

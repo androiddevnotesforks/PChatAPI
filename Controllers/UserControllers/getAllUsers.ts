@@ -1,6 +1,6 @@
-const UserModel = require("../../Models/UserModel")
-
-const getAllUsers = async (req,res) => {
+import UserModel from "../../Models/UserModel"
+import {Request, Response} from "express";
+const getAllUsers = async (req:Request,res:Response) => {
 	try{
 		const users = await UserModel.find({})
 		return res.json({
@@ -19,4 +19,4 @@ const getAllUsers = async (req,res) => {
 }
 
 
-module.exports =  getAllUsers
+export default getAllUsers

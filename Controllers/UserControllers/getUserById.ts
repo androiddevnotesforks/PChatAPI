@@ -1,6 +1,8 @@
-const UserModel = require("../../Models/UserModel")
+import {Request, Response} from "express";
 
-const getUserById = async (req,res) => {
+import UserModel from "../../Models/UserModel"
+
+const getUserById = async (req:Request,res:Response) => {
 	const id = req.params.id
 	try{
 		const user= await UserModel.findOne({ userId:id })
@@ -26,4 +28,4 @@ const getUserById = async (req,res) => {
 		})
 	}
 }
-module.exports =  getUserById
+export default getUserById

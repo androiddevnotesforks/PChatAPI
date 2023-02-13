@@ -2,7 +2,7 @@ const RoomModel = require("../../Models/RoomModel");
 
 
 
-const getRoomId = async (user1,user2) => {
+const getRoomId = async (user1:string,user2:string) => {
 	try{
 		const room1 = await RoomModel.findOne({ user1:user1,user2:user2 })
 		const room2 = await RoomModel.findOne({ user1:user2,user2:user1 })
@@ -15,9 +15,9 @@ const getRoomId = async (user1,user2) => {
 				return room1._id
 			}
 		}
-	}catch (e){
+	}catch (e:unknown){
 		console.log("Error getting rooms")
 		console.log(e)
 	}
 }
-module.exports =  getRoomId
+export default getRoomId

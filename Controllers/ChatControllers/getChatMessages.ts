@@ -1,15 +1,16 @@
-const UserModel = require("../../Models/UserModel")
+import {Request, Response} from "express";
+
+import UserModel from "../../Models/UserModel"
 
 
-
-const getMessagesByUser = async (req,res) => {
+const getMessagesByUser = async (req:Request,res:Response) => {
 	const senderEmail = req.params.senderEmail
 	const receiverEmail = req.params.receiverEmail
 
 	try{
 		const sender = await UserModel.findOne({ email:senderEmail })
 		const receiver = await UserModel.findOne({ email:receiverEmail })
-		const senderChats = sender.chats.find((chat) => chat.email === receiver.email)
+		const senderChats = sender.chats.find((chat:any) => chat.email === receiver.email)
 
 		if (senderChats === undefined){
 			return res.json({
@@ -40,4 +41,4 @@ const getMessagesByUser = async (req,res) => {
 
 
 }
-module.exports =  getMessagesByUser
+export default getMessagesByUser

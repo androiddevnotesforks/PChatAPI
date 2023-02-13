@@ -1,6 +1,8 @@
+import {Request,Response} from "express";
+
 const UserModel = require("../../Models/UserModel")
 
-const addUser = async (req,res) => {
+const addUser = async (req:Request,res:Response) => {
 	console.log(req.body)
 	const { displayName,imageUrl,email,userId } = req.body
 	try{
@@ -19,7 +21,7 @@ const addUser = async (req,res) => {
 					success:true
 				})
 			})
-			.catch((err) => {
+			.catch((err:unknown) => {
 				console.log(err)
 				return res.json({
 					msg:"An unexpected error occurred",
@@ -35,7 +37,7 @@ const addUser = async (req,res) => {
 
 
 
-	}catch (e){
+	}catch (e:unknown){
 		console.log(e)
 		return res.json({
 			msg:"An unexpected error occurred",
@@ -45,4 +47,4 @@ const addUser = async (req,res) => {
 }
 
 
-module.exports =  addUser
+export default  addUser

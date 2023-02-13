@@ -1,7 +1,8 @@
-const UserModel = require("../../Models/UserModel")
+import {Request, Response} from "express";
 
+import UserModel from "../../Models/UserModel"
 
-const getChats = async (req,res) => {
+const getChats = async (req:Request,res:Response) => {
 	const email = req.params.email
 	try{
 		const sender = await UserModel.findOne({ email })
@@ -21,5 +22,4 @@ const getChats = async (req,res) => {
 	}
 
 }
-
-module.exports = getChats
+export default getChats
