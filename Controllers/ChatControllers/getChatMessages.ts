@@ -1,43 +1,41 @@
 import {Request, Response} from "express";
-
-import UserModel from "../../Models/UserModel"
-
-
-const getMessagesByUser = async (req:Request,res:Response) => {
-	const senderEmail = req.params.senderEmail
-	const receiverEmail = req.params.receiverEmail
-
-	try{
-		const sender = await UserModel.findOne({ email:senderEmail })
-		const receiver = await UserModel.findOne({ email:receiverEmail })
-		const senderChats = sender.chats.find((chat:any) => chat.email === receiver.email)
-
-		if (senderChats === undefined){
-			return res.json({
-				msg:"No messages were found",
-				success:true,
-				messages:[]
-			})
-		}
-
-		const messages = senderChats.messages
-		return res.json({
-			msg:"messages found successfully",
-			success:true,
-			messages:messages
-		})
-
-	}catch (e){
-		console.log(e)
-		return res.json({
-			msg:"error ocourred",
-			success:false,
-			messages:[]
-
-		})
-	}
+import prisma from "../../config/database";
 
 
+const getMessagesByUser = async (req: Request, res: Response) => {
+    const senderId = req.params.senderId
+    const receiverId = req.params.receiverId
+    try {
+        const messages = await prisma.message.findMany({
+            where: {
+				senderId:senderId,
+				receiverId:receiverId
+			}
+        })
+        const messages2 = await prisma.message.findMany({
+            where: {
+                receiverId:senderId,
+                senderId:receiverId
+            }
+        })
+        return res.json({
+            msg: "Messages found successfully",
+            success: true,
+            messageCount:messages.length,
+            messages: [...messages2,...messages]
+        })
+
+    } catch (err:unknown) {
+        console.log("Error getting messages",err)
+
+        return res.json({
+            msg: "An  unexpected error occurred",
+            success: false,
+            messageCount:0,
+            messages: []
+
+        })
+    }
 
 
 }

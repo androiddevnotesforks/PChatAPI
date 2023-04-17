@@ -1,48 +1,45 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import {Request,Response} from "express";
+import prisma from "../../config/database";
 
-const UserModel = require("../../Models/UserModel")
+
 
 const addUser = async (req:Request,res:Response) => {
-	console.log(req.body)
+	console.log("Add User")
 	const { displayName,imageUrl,email,userId } = req.body
 	try{
-		const existingUser = await UserModel.findOne({ email })
-		if (existingUser === null){
-			const newUser = new UserModel({
-				displayName,
-				email,
-				imageUrl,
-				userId
-			})
-			newUser.save()
-			.then(() => {
+		const newUser = await prisma.account.create({
+			data:{
+				googleId:userId,
+				fullName:displayName,
+				email:email,
+				imageUrl:imageUrl,
+			}
+		})
+		return res.json({
+			msg:"Account created successfully",
+			success:true,
+			user:newUser
+		})
+
+
+	}catch (err:unknown){
+		if (err instanceof PrismaClientKnownRequestError){
+			if (err.code === "P2002"){
 				return res.json({
-					msg:"Account created successfully",
-					success:true
+					msg:"A user with a similar email address already exist",
+					success:false,
+
 				})
-			})
-			.catch((err:unknown) => {
-				console.log(err)
+			}else {
 				return res.json({
 					msg:"An unexpected error occurred",
-					success:false
+					success:false,
+
 				})
-			})
-		}else {
-			return res.json({
-				msg:"An account with the similar username already exists",
-				success:false
-			})
+			}
 		}
 
-
-
-	}catch (e:unknown){
-		console.log(e)
-		return res.json({
-			msg:"An unexpected error occurred",
-			success:false
-		})
 	}
 }
 

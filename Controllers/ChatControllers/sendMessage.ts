@@ -1,81 +1,21 @@
-const UserModel = require("../../Models/UserModel")
-const crypto = require("crypto");
+import {Message} from "@prisma/client";
+import prisma from "../../config/database";
 
 
+async function sendMessage(message: Message) {
+    try {
+        return await prisma.message.create({
+            data: {
+                ...message
+            }
+        })
+    } catch (err: unknown) {
+        console.log("Error inserting/sending message",err)
+        return null
 
-async function sendMessage(message:any){
-	const sender = await UserModel.findOne({ email:message.sender })
-	const receiver = await UserModel.findOne({ email:message.receiver })
-	const senderChats = sender.chats
-	const receiverChats = receiver.chats
-
-	const currentChat = senderChats.find((chat:any) => chat.email === receiver.email)
-	const messageId = crypto.randomBytes(16).toString("hex")
-	const chatId = crypto.randomBytes(16).toString("hex")
-
-	const messageObj = { ...message,id: messageId }
-	if (!currentChat){
-		await UserModel.findByIdAndUpdate(sender._id,{
-			$push:{
-				chats:{
-					id:chatId,
-					name:receiver.displayName,
-					userId:receiver.userId,
-					email:receiver.email,
-					imageUrl:receiver.imageUrl,
-					messages:[messageObj]
-				}
-			}
-		},{})
-		await UserModel.findByIdAndUpdate(receiver._id,{
-			$push:{
-				chats:{
-					id:chatId,
-					userId:sender.userId,
-					name:sender.displayName,
-					email:sender.email,
-					imageUrl:sender.imageUrl,
-					messages:[messageObj]
-				}
-			}
-		},{})
-	}else {
-		await UserModel.findOneAndUpdate({
-			_id:sender._id,
-			"chats.email":receiver.email
-		},{
-
-			$push:{
-				"chats.$[chats].messages": messageObj
-			},
-		},{
-			arrayFilters:[
-				{
-					"chats.email":receiver.email
-				}
-			]
-		})
+    }
 
 
-		await UserModel.findOneAndUpdate(
-			{
-				_id:receiver._id,
-				"chats.email":sender.email
-			},{
-				// chats:{ ...newSenderChatMessages }
-				$push:{
-					"chats.$[chats].messages": messageObj
-				},
-			},{
-				arrayFilters:[
-					{
-						"chats.email":sender.email
-					}
-				]
-			}
-		)
-	}
-	return messageObj
 }
 
 export default sendMessage

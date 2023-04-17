@@ -2,6 +2,7 @@ import { Response} from "express";
 
 import UserModel from "../../Models/UserModel"
 import {TypedRequestQuery} from "../../types/TypedRequestQuery";
+import prisma from "../../config/database";
 
 type RequestQuery = {
      query:string
@@ -17,13 +18,12 @@ const searchUsers = async (req: TypedRequestQuery<RequestQuery>, res: Response) 
           })
      }
      try {
-          const users = await UserModel.find()
-          const searchresults = users.filter((user:any) => user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+          const users = await prisma.account.findMany({})
+          const searchresults = users.filter((user) => user.email.toLowerCase().includes(searchTerm.toLowerCase()))
           return res.json({
                msg: `Found ${searchresults.length} results for ${searchTerm}`,
                success: true,
                users: searchresults,
-
           })
      } catch (e: unknown) {
           console.log(e)
