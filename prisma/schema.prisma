@@ -21,12 +21,28 @@ model Account {
 }
 
 model Message {
-  messageId  String   @id @default(uuid())
-  message    String
-  senderId   String
-  receiverId String
-  sender     Account  @relation(name: "sentMessages", fields: [senderId], references: [userId])
-  receiver   Account  @relation(name: "receivedMessages", fields: [receiverId], references: [userId])
-  sentAt     DateTime @default(now())
-  isRead     Boolean
+  messageId         String   @id @default(uuid())
+  message           String
+  senderId          String
+  receiverId        String
+  sender            Account  @relation(name: "sentMessages", fields: [senderId], references: [userId])
+  receiver          Account  @relation(name: "receivedMessages", fields: [receiverId], references: [userId])
+  sentAt            DateTime @default(now())
+  isRead            Boolean
+  isSenderDeleted   Boolean
+  isReceiverDeleted Boolean
 }
+
+model DeviceInfo {
+  deviceInfoId String @id @default(uuid())
+  googleId     String
+  deviceId     String
+}
+
+// model Chat {
+//   chatId  String  @id @default(uuid())
+//   userId1 String
+//   userId2 String
+//   user1   Account @relation(name: "chats1", fields: [userId1], references: [userId])
+//   user2   Account @relation(name: "chats2", fields: [userId2], references: [userId])
+// }

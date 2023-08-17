@@ -4,12 +4,13 @@ import dotenv from "dotenv"
 import http from "http"
 import cors from "cors"
 import socketio from 'socket.io'
-
-
+import { initializeApp,cert } from 'firebase-admin/app'
 import sendMessage from './././Controllers/ChatControllers/sendMessage'
 import UserRoutes from "./Routes/UserRoutes"
 import ChatRoutes from "./Routes/ChatRoutes"
 import {Message} from "@prisma/client";
+import serviceAccount from './service_account.json'
+import * as crypto from "crypto";
 
 
 const app = express();
@@ -24,6 +25,14 @@ const io = socketio(server, {
 
 dotenv.config()
 
+initializeApp({
+    credential:cert({
+        projectId:serviceAccount.project_id,
+        privateKey:serviceAccount.private_key,
+        clientEmail:serviceAccount.client_email,
+    }),
+    databaseURL: "https://<DATABASE_NAME>.firebaseio.com",
+})
 //middleware
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: false}));
@@ -51,20 +60,27 @@ app.get('/', (req: Request, res: Response) => {
 
 const port = process.env.PORT || 9000;
 
-// const dummyMessage = {
-//     message: "Hello World 2",
-//     senderId: "09a6d6c7-e9c1-4e80-bc8d-2e50b40feddb",
-//     receiverId: "bf723b54-bf8b-4c6d-b9d4-b193da4dd482",
-//     sentAt:(new Date()).toString(),
-//     isRead: false,
-//     messageId: crypto.randomBytes(16).toString("hex")
-// }
-// insertMessage(dummyMessage)
+const dummyMessage:Partial<Message> = {
+    message: "Hello Peter 2 from Peter 3",
+    receiverId: "f46296fa-3dda-4f0e-9f9f-dc7b43f37350",
+    // senderId: "c94f3249-558f-48c3-b03c-e80ad955ba0a",
+    senderId:"c1dcc8e6-b87e-4bc2-9d82-12a587717559",
+    isRead: false,
+    messageId: crypto.randomBytes(16).toString("hex"),
+    isReceiverDeleted:false,
+    isSenderDeleted:false,
+
+}
+
+// sendMessage(dummyMessage)
 //     .then(() => {
 //
 //     })
 //     .catch((err) => {
 //         console.log("Er")
 //     })
+
+
+
 server.listen(port, () => console.log("Server started on PORT 9000"));
 

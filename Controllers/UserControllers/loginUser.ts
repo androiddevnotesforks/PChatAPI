@@ -4,9 +4,9 @@ import prisma from "../../config/database";
 
 
 
-const addUser = async (req:Request,res:Response) => {
+const loginUser = async (req:Request, res:Response) => {
 	console.log("Add User")
-	const { displayName,imageUrl,email,userId } = req.body
+	const { displayName,imageUrl,email,googleId,deviceToken } = req.body
 	try{
 		const existingUser = await prisma.account.findUnique({
 			where:{
@@ -16,23 +16,38 @@ const addUser = async (req:Request,res:Response) => {
 		if (existingUser === null){
 			const newUser = await prisma.account.create({
 				data:{
-					googleId:userId,
+					googleId:googleId,
 					fullName:displayName,
 					email:email,
 					imageUrl:imageUrl,
 				}
 			})
+			const newDeviceInfo = await prisma.deviceInfo.create({
+				data:{
+					deviceId:deviceToken,
+					googleId:googleId,
+				}
+			})
+
 			return res.json({
 				msg:"Account created successfully",
 				success:true,
 				isExisting:false,
+				deviceId:newDeviceInfo.deviceId,
 				user:newUser
 			})
 		}else {
+			const newDeviceInfo = await prisma.deviceInfo.create({
+				data:{
+					deviceId:deviceToken,
+					googleId:googleId,
+				}
+			})
 			return res.json({
 				msg:"A user with a similar email address has already been added",
 				success:true,
 				user:existingUser,
+				deviceId:newDeviceInfo.deviceId,
 				isExisting:true,
 			})
 		}
@@ -61,4 +76,4 @@ const addUser = async (req:Request,res:Response) => {
 }
 
 
-export default  addUser
+export default  loginUser

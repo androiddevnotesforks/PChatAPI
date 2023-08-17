@@ -1,11 +1,9 @@
-import { Response} from "express";
-
-import UserModel from "../../Models/UserModel"
+import {Response} from "express";
 import {TypedRequestQuery} from "../../types/TypedRequestQuery";
 import prisma from "../../config/database";
 
 type RequestQuery = {
-     query:string
+     query: string
 }
 
 const searchUsers = async (req: TypedRequestQuery<RequestQuery>, res: Response) => {
