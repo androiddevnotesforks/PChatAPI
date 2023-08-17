@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import prisma from "../../config/database";
 
 
-const getMessagesByUser = async (req: Request, res: Response) => {
+const getMessagesBy2Users = async (req: Request, res: Response) => {
     const senderId = req.params.senderId
     const receiverId = req.params.receiverId
     try {
@@ -39,4 +39,4 @@ const getMessagesByUser = async (req: Request, res: Response) => {
 
 
 }
-export default getMessagesByUser
+export default getMessagesBy2Users

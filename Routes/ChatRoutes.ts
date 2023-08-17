@@ -1,11 +1,11 @@
 import Express from "express"
-import getMessagesByUser from "../Controllers/ChatControllers/getChatMessages"
+import getMessagesBy2Users from "../Controllers/ChatControllers/getMessagesFor2Users"
 import getAllMessagesById from "../Controllers/UserControllers/getAllMessagesById";
 
 const router = Express.Router()
 
 router.get("/message/all/:userId",getAllMessagesById)
-router.get("/message/:senderId/:receiverId", getMessagesByUser)
+router.get("/message/:senderId/:receiverId", getMessagesBy2Users)
 
 
 export default router
