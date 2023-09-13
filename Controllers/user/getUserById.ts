@@ -1,7 +1,17 @@
 import {Request, Response} from "express";
 import prisma from "../../config/database";
+import {TypedRequestParams} from "../../types/TypedRequestParams";
+import BaseResponse from "../../util/BaseResponse";
+import {Account} from "@prisma/client";
 
-const getUserById = async (req: Request, res: Response) => {
+interface RequestParams {
+    id:string
+}
+interface ResponseBody extends BaseResponse {
+    chats: Account[] | null
+    user:Account | null
+}
+const getUserById = async (req: TypedRequestParams<RequestParams>, res: Response<ResponseBody>) => {
     const id = req.params.id
     try {
         const user = await prisma.account.findUnique({
@@ -50,7 +60,7 @@ const getUserById = async (req: Request, res: Response) => {
         }
 
     } catch (e) {
-        console.log(e)
+        console.log("Error fetching user by Id",e)
         return res.json({
             msg: "An unexpected error occurred",
             success: false,

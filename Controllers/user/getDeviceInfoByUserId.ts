@@ -1,6 +1,7 @@
 import { Request,Response } from "express";
 import prisma from "../../config/database";
 
+
 const getDeviceInfoByUserId = async (req:Request,res:Response) => {
     try {
         const userId = req.params.userId

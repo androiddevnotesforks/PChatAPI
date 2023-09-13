@@ -1,6 +1,6 @@
 import Express from "express"
-import getMessagesBy2Users from "../Controllers/ChatControllers/getMessagesFor2Users"
-import getAllMessagesById from "../Controllers/UserControllers/getAllMessagesById";
+import getMessagesBy2Users from "../Controllers/chat/getMessagesFor2Users"
+import getAllMessagesById from "../Controllers/user/getAllMessagesById";
 
 const router = Express.Router()
 

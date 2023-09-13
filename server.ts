@@ -5,7 +5,7 @@ import http from "http"
 import cors from "cors"
 import socketio from 'socket.io'
 import { initializeApp,cert } from 'firebase-admin/app'
-import sendMessage from './././Controllers/ChatControllers/sendMessage'
+import sendMessage from './Controllers/chat/sendMessage'
 import UserRoutes from "./Routes/UserRoutes"
 import ChatRoutes from "./Routes/ChatRoutes"
 import {Message} from "@prisma/client";
