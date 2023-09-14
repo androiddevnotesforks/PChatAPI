@@ -1,4 +1,4 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+
 import {Request,Response} from "express";
 import prisma from "../../config/database";
 
@@ -53,24 +53,25 @@ const loginUser = async (req:Request, res:Response) => {
 		}
 
 	}catch (err:unknown){
-		if (err instanceof PrismaClientKnownRequestError){
-			if (err.code === "P2002"){
-				return res.json({
-					msg:"A user with a similar email address already exist",
-					success:false,
-					user:null,
-					isExisting:true,
-
-				})
-			}else {
-				return res.json({
-					msg:"An unexpected error occurred",
-					success:false,
-					isExisting:false,
-					user:null,
-				})
-			}
-		}
+		// if (err instanceof PrismaClientKnownRequestError){
+		// 	if (err.code === "P2002"){
+		// 		return res.json({
+		// 			msg:"A user with a similar email address already exist",
+		// 			success:false,
+		// 			user:null,
+		// 			isExisting:true,
+		//
+		// 		})
+		// 	}else {
+		//
+		// 	}
+		// }
+		return res.json({
+			msg:"An unexpected error occurred",
+			success:false,
+			isExisting:false,
+			user:null,
+		})
 
 	}
 }
